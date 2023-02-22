@@ -14,7 +14,7 @@ const multer = require("multer");
 const path = require("path");
 dotenv.config();
 // app.use(helmet());
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+// app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(
   cors({
     origin: "https://thunderous-pasca-e2cda8.netlify.app",
