@@ -17,7 +17,7 @@ dotenv.config();
 // app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(
   cors({
-    origin: "https://social-media542.netlify.app/",
+    origin: "https://social-media542.netlify.app",
   })
 );
 
