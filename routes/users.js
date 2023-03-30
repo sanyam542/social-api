@@ -1,6 +1,31 @@
 const User = require("../models/User");
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
+const { Users } = require("../../my-app/src/dummyData");
+
+//get all users
+
+router.get("/all", async (req, res) => {
+  // const userId = req.query.userId;
+  // const username = req.query.username;
+
+  User.find({}, (err, users) => {
+    if (err) {
+      console.error(err);
+    } else {
+      res.status(200).json(users);
+    }
+  });
+
+  // try {
+  //   const users = await Users.find({});
+  //   // const { password, updatedAt, ...other } = user._doc;
+  //   res.status(200).json(users);
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).json(err);
+  // }
+});
 
 //update user
 router.put("/:id", async (req, res) => {

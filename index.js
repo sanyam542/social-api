@@ -16,9 +16,10 @@ dotenv.config();
 // app.use(helmet());
 // app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(
-  cors({
-    origin: "https://social-media542.netlify.app",
-  })
+  cors()
+  // {
+  // origin: ["https://social-media542.netlify.app", "http://localhost:3000/"],
+  // }
 );
 
 mongoose.connect(
@@ -63,5 +64,5 @@ app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 
 app.listen(8800, () => {
-  console.log("Backend server is running!");
+  console.log("Backend server is running! port:8800");
 });
