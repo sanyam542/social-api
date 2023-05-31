@@ -12,6 +12,16 @@ const messageRoute = require("./routes/message");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const axios = require("axios");
+const { ImgurClient } = require("imgur");
+const fs = require("fs");
+
+const FormData = require("form-data");
+
+const client = new ImgurClient({
+  accessToken: "7df8e120772b6adc91f2089bd20d586dc6c4b315",
+});
+
 dotenv.config();
 // app.use(helmet());
 // app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -36,22 +46,38 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use(express.json());
 app.use(morgan("common"));
 
+//upload
+
 const storage = multer.diskStorage({
   destination: (req, File, cb) => {
     cb(null, "public/images");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
-    console.log(file.originalname);
-    console.log();
-    console.log(req.body.name);
   },
 });
 
 const upload = multer({ storage: storage });
-app.post("/api/upload", upload.single("file"), (req, res) => {
+
+app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
-    return res.status(200).json("file uploaded successfully");
+    // const fileName = req.body.name;
+    const file = req.file;
+    const fileData = fs.readFileSync(
+      __dirname + `/public/images/${file.originalname}`
+    );
+
+    const response = await client.upload({
+      image: fileData,
+      type: "stream",
+    });
+    console.log(response.data.link);
+    fs.unlinkSync(__dirname + `/public/images/${file.originalname}`);
+    return res.status(200).json(response.data.link);
+    // imgur.uploadFile("public/images/" + file).then((urlObject) => {
+    //   console.log(storage.filename);
+    //   return res.status(200).json({ link: urlObject.link });
+    // });
   } catch (err) {
     console.log(err);
   }
