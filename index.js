@@ -12,25 +12,18 @@ const messageRoute = require("./routes/message");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
-const axios = require("axios");
+
 const { ImgurClient } = require("imgur");
 const fs = require("fs");
-
-const FormData = require("form-data");
 
 const client = new ImgurClient({
   accessToken: "7df8e120772b6adc91f2089bd20d586dc6c4b315",
 });
 
 dotenv.config();
-// app.use(helmet());
+app.use(helmet());
 // app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(
-  cors()
-  // {
-  // origin: ["https://social-media542.netlify.app", "http://localhost:3000/"],
-  // }
-);
+app.use(cors());
 
 mongoose.connect(
   process.env.MONGO_URL,
@@ -74,10 +67,6 @@ app.post("/api/upload", upload.single("file"), async (req, res) => {
     console.log(response.data.link);
     fs.unlinkSync(__dirname + `/public/images/${file.originalname}`);
     return res.status(200).json(response.data.link);
-    // imgur.uploadFile("public/images/" + file).then((urlObject) => {
-    //   console.log(storage.filename);
-    //   return res.status(200).json({ link: urlObject.link });
-    // });
   } catch (err) {
     console.log(err);
   }
