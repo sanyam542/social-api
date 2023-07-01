@@ -17,7 +17,7 @@ const { ImgurClient } = require("imgur");
 const fs = require("fs");
 
 const client = new ImgurClient({
-  accessToken: "7df8e120772b6adc91f2089bd20d586dc6c4b315",
+  accessToken: process.env.ACCESS_TOKEN,
 });
 
 dotenv.config();
